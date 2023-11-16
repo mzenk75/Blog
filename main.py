@@ -134,7 +134,7 @@ def register():
         user = result.scalar()
         if user:
             # User already exists
-            flash("You've already signed up with that email, log in instead!")
+            flash("Diese Email ist bereits registriert, logge Dich stattdessen ein!")
             return redirect(url_for('login'))
 
         hash_and_salted_password = generate_password_hash(
@@ -165,11 +165,11 @@ def login():
         user = result.scalar()
         # Email doesn't exist
         if not user:
-            flash("That email does not exist, please try again.")
+            flash("Diese Email existiert nicht. Probiere eine andere.")
             return redirect(url_for('login'))
         # Password incorrect
         elif not check_password_hash(user.password, password):
-            flash('Password incorrect, please try again.')
+            flash('Passwort ist falsch. Probiere noch einmal.')
             return redirect(url_for('login'))
         else:
             login_user(user)
@@ -200,7 +200,7 @@ def show_post(post_id):
     # Only allow logged-in users to comment on posts
     if comment_form.validate_on_submit():
         if not current_user.is_authenticated:
-            flash("You need to login or register to comment.")
+            flash("Um zu kommentieren, musst Du Dich einloggen.")
             return redirect(url_for("login"))
 
         new_comment = Comment(
@@ -288,4 +288,4 @@ def send_email(name, email, phone, message):
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=False, port=5001)
